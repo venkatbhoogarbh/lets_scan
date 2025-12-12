@@ -1,26 +1,38 @@
-function onScanSuccess(decodedText, decodedResult) {
-    const resultBox = document.getElementById("result");
-    const openBtn = document.getElementById("open-btn");
+let html5QrCode;
+let scanning = false;
 
-    resultBox.innerText = decodedText;
+const resultText = document.getElementById("result-text");
+const openLinkButton = document.getElementById("open-link");
 
-    // Check if scanned text is a URL
-    if (decodedText.startsWith("http://") || decodedText.startsWith("https://")) {
-        openBtn.style.display = "block";     // show button
-        openBtn.onclick = () => {
-            window.open(decodedText, "_blank");
-        };
-    } else {
-        openBtn.style.display = "none";      // hide button if not URL
-    }
+document.getElementById("start-btn").onclick = () => startScanner();
+document.getElementById("stop-btn").onclick = () => stopScanner();
 
-    // Scroll to result smoothly
-    document.getElementById("result-box").scrollIntoView({ behavior: "smooth" });
+function startScanner() {
+    if (scanning) return;
+
+    html5QrCode = new Html5Qrcode("reader");
+
+    html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        qrCodeMessage => {
+            resultText.innerText = qrCodeMessage;
+            openLinkButton.href = qrCodeMessage;
+            openLinkButton.classList.remove("hidden");
+        }
+    ).then(() => {
+        scanning = true;
+        document.getElementById("start-btn").classList.add("hidden");
+        document.getElementById("stop-btn").classList.remove("hidden");
+    });
 }
 
-// Scanner setup
-const scanner = new Html5QrcodeScanner("reader", {
-    fps: 10,
-    qrbox: 250
-});
-scanner.render(onScanSuccess);
+function stopScanner() {
+    if (!scanning) return;
+
+    html5QrCode.stop().then(() => {
+        scanning = false;
+        document.getElementById("start-btn").classList.remove("hidden");
+        document.getElementById("stop-btn").classList.add("hidden");
+    });
+}
