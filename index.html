@@ -4,29 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lets Scan</title>
-
-    <!-- Style -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- QR Scanner Library -->
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-    <h1>Lets Scan</h1>
-    <p class="tagline">Scan any QR code quickly and easily.</p>
+    <div class="container">
+        <h1 class="title">Lets Scan</h1>
+        <p class="subtitle">Scan any QR code quickly and easily.</p>
 
-    <!-- Scanner Box -->
-    <div id="reader"></div>
+        <div id="scanner-card" class="glass-card">
+            <div id="reader"></div>
+            <button id="start-btn" class="glass-btn">Start Scanning</button>
+            <button id="stop-btn" class="glass-btn hidden">Stop Scanning</button>
+        </div>
 
-    <!-- Result -->
-    <div id="result-box">
-        <h2>Scan Result:</h2>
-        <p id="result">No QR code scanned yet.</p>
-        <button id="open-btn" style="display: none;">Open Link</button>
+        <div id="result-card" class="glass-card">
+            <h2>Scan Result</h2>
+            <p id="result-text">No QR code scanned yet.</p>
+            <a id="open-link" class="glass-btn hidden" target="_blank">Open Link</a>
+        </div>
     </div>
 
-    <!-- JS File -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="script.js"></script>
 </body>
 </html>
